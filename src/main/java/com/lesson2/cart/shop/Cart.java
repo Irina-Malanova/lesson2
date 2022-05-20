@@ -25,6 +25,10 @@ public class Cart {
         productList.add(product);
     }
 
+    public void deleteProduct(Product product) {
+        productList.remove(product);
+    }
+
     public void showProduct() {
         for (Product product : productList) {
             System.out.printf("Id:%d name:%s price:%5.2f\n", product.getId(),

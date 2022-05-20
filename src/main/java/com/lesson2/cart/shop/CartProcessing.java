@@ -15,15 +15,41 @@ public class CartProcessing {
 
     @Autowired
     private Cart cart;
-
+    private void deleteProductFromCart(){
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println("Выберите номер продукта из и удалите его из корзины, номера продуктов можно указывать через пробел, окончание удаления /");
+            System.out.println("В вашей корзине следующие продукты:");
+            cart.showProduct();
+            String str = sc.nextLine();
+            if (str.equals("/")) {
+                break;
+            } else {
+                try {
+                    String[] arr = str.split(" ");
+                    for (int i = 0; i < arr.length; i++) {
+                        Product item = productRepository.getById(Integer.parseInt(arr[i]));
+                        if(item == null) throw new Exception();
+                        cart.deleteProduct(item);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Введен некорректный номер");
+                }
+            }
+        }
+        System.out.println("В вашей корзине следующие продукты:");
+        cart.showProduct();
+    }
     public void processCart() {
         Scanner sc = new Scanner(System.in);
         while (true) {
-            System.out.println("Выберите номер продукта из списка и добавьте его в корзину, номера продуктов можно указывать через пробел, окончание выбора /");
+            System.out.println("Выберите номер продукта из списка и добавьте его в корзину, номера продуктов можно указывать через пробел, окончание выбора /\nпереход на удаление \\");
             printProductList();
             String str = sc.nextLine();
             if (str.equals("/")) {
                 break;
+            } else if (str.equals("\\")) {
+                deleteProductFromCart();
             } else {
                 try {
                     String[] arr = str.split(" ");
